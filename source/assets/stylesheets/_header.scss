@@ -72,7 +72,7 @@
   #logo {
     float: left;
     position: relative;
-    top: 1px;
+    top: -1px;
 
     height: 30px;
     overflow: visible;
@@ -84,8 +84,9 @@
     line-height: 1em;
     text-decoration: none;
     text-rendering: optimizeLegibility;
-    margin-bottom: -1px;
-    padding-bottom: 1px;
+    margin-bottom: -3px;
+    padding-top: 2px;
+    border-bottom: 1px solid transparent;
 
     img {
       position: relative;
@@ -105,8 +106,7 @@
     &:hover,
     &:focus {
       text-decoration: none;
-      border-bottom: 1px solid;
-      padding-bottom: 0;
+      border-bottom-color: $white;
     }
 
     &:active {
