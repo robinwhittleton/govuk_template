@@ -20,12 +20,14 @@ module Compiler
       @manifests = YAML.load_file(@repo_root.join('manifests.yml'))
       @stylesheet_assets = []
       @static_assets = []
+      @govuk_template_css_integrity = ''
     end
 
     def compile
       prepare_build_dir
       compile_javascripts
       compile_stylesheets
+      add_integrity_attributes
       copy_views
       copy_static_assets
       copy_needed_toolkit_assets
@@ -65,6 +67,13 @@ module Compiler
         File.open(@build_dir.join('assets', 'stylesheets', "#{asset.logical_path}.erb"), 'w') {|f| f.write asset.to_s }
       end
       @stylesheet_assets = stylesheet_assets.uniq
+    end
+
+    def add_integrity_attributes
+      # We have hardcoded references in the layout, so hardcoding here is OK
+      @govuk_template_css_integrity = build_integrity_attribute 'govuk-template.css'
+      @govuk_template_print_css_integrity = build_integrity_attribute 'govuk-template-print.css'
+      @govuk_template_js_integrity = build_integrity_attribute 'govuk-template.js'
     end
 
     def copy_views
@@ -133,6 +142,14 @@ module Compiler
       @build_dir.join('assets', 'stylesheets').mkpath
       @build_dir.join('assets', 'javascripts').mkpath
       @build_dir.join('views').mkpath
+    end
+
+    def build_integrity_attribute file
+      puts @stylesheet_assets
+      # asset = env.find_asset(file)
+      # abort "Asset #{file} not found" unless asset
+      # puts Sprockets::DigestUtils
+      #{}"integrity=\"#{hash}\""
     end
   end
 end
